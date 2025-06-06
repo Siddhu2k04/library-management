@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Library Management System</h1>
+
+    <ul class="nav">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('add_book') }}#add-form">Add Book</a></li>
+        <li><a href="{{ url_for('display_books') }}">Display Books</a></li>
+        <li><a href="{{ url_for('remove_book') }}#remove-form">Remove Book</a></li>
+        <li><a href="{{ url_for('update_book') }}#update-form">Update Book</a></li>
+        <li><a href="{{ url_for('search_book') }}#search-form">Search Book</a></li>
+        <li><a href="{{ url_for('issue_book') }}#issue-form">Issue Book</a></li>
+        <li><a href="{{ url_for('return_book') }}#return-form">Return Book</a></li>
+    </ul>
+
+    {% if page == 'home' %}
+        <h2>Welcome to the Library Management System</h2>
+        <p>Use the navigation links above to manage books.</p>
+        <h3>Available Books</h3>
+        {% if library %}
+        <ul class="books">
+            {% for book in library %}
+                <li><strong>ID:</strong> {{ book.id }} &nbsp; <strong>Title:</strong> {{ book.title }} &nbsp; <strong>Author:</strong> {{ book.author }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No books available.</p>
+        {% endif %}
+    {% endif %}
+
+    {% if page == 'add' %}
+        <h2 id="add-form">Add a New Book</h2>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form method="POST">
+            <label>Book ID:
+                <input type="text" name="book_id" required>
+            </label>
+            <label>Title:
+                <input type="text" name="title" required>
+            </label>
+            <label>Author:
+                <input type="text" name="author" required>
+            </label>
+            <input type="submit" value="Add Book">
+        </form>
+    {% endif %}
+
+    {% if page == 'display' %}
+        <h2>All Books</h2>
+        {% if library %}
+        <ul class="books">
+            {% for book in library %}
+                <li><strong>ID:</strong> {{ book.id }} &nbsp; <strong>Title:</strong> {{ book.title }} &nbsp; <strong>Author:</strong> {{ book.author }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No books available.</p>
+        {% endif %}
+    {% endif %}
+
+    {% if page == 'remove' %}
+        <h2 id="remove-form">Remove a Book</h2>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form method="POST">
+            <label>Book ID to remove:
+                <input type="text" name="book_id" required>
+            </label>
+            <input type="submit" value="Remove Book">
+        </form>
+    {% endif %}
+
+    {% if page == 'update' %}
+        <h2 id="update-form">Update a Book</h2>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form method="POST">
+            <label>Book ID:
+                <input type="text" name="book_id" required>
+            </label>
+            <label>New Title:
+                <input type="text" name="new_title" required>
+            </label>
+            <label>New Author:
+                <input type="text" name="new_author" required>
+            </label>
+            <input type="submit" value="Update Book">
+        </form>
+    {% endif %}
+
+    {% if page == 'search' %}
+        <h2 id="search-form">Search Books</h2>
+        <form method="POST">
+            <label>Keyword (Title or Author):
+                <input type="text" name="keyword" required>
+            </label>
+            <input type="submit" value="Search">
+        </form>
+        {% if results is not none %}
+            <h3>Search Results</h3>
+            {% if results %}
+            <ul class="books">
+                {% for book in results %}
+                    <li><strong>ID:</strong> {{ book.id }} &nbsp; <strong>Title:</strong> {{ book.title }} &nbsp; <strong>Author:</strong> {{ book.author }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No books found.</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if page == 'issue' %}
+        <h2 id="issue-form">Issue a Book</h2>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form method="POST">
+            <label>Book ID:
+                <input type="text" name="book_id" required>
+            </label>
+            <label>User Name:
+                <input type="text" name="user" required>
+            </label>
+            <input type="submit" value="Issue Book">
+        </form>
+    {% endif %}
+
+    {% if page == 'return' %}
+        <h2 id="return-form">Return a Book</h2>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form method="POST">
+            <label>Book ID:
+                <input type="text" name="book_id" required>
+            </label>
+            <label>Title:
+                <input type="text" name="title" required>
+            </label>
+            <label>Author:
+                <input type="text" name="author" required>
+            </label>
+            <input type="submit" value="Return Book">
+        </form>
+    {% endif %}
+</div>
+
+<script>
+    window.onload = function () {
+        const hash = window.location.hash;
+        if (hash) {
+            const element = document.querySelector(hash);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    };
+
+   
+</script>
+</body>
+</html>
