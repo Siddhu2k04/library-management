@@ -90,5 +90,7 @@ def return_book():
             message = "Book was not issued."
     return render_template("index.html", page="return", message=message)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=10000)  # Render uses port 10000
+
